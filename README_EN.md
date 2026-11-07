@@ -15,6 +15,7 @@ Fixes a soft-lock in Risk of Rain 2's Alloyed Collective DLC: after offering the
 | `Server.PreventSpexAnger` | `true` | Blocks `SetStateOnHurt.SetPain()` (only on objects carrying `SolusVendorController`) and `SolusVendorMainState.CanExecuteSkill()`, so SPEX never enters the steal state and the ejection is never triggered. |
 | `Server.RefundExposedCerebellum` | `true` | Records the player who actually handed over the Exposed Cerebellum; when `StealItem.OnExit` fires (the ejection), the item is refunded if that player has neither the Exposed nor the Encrypted Cerebellum in their inventory. |
 | `Server.AnnounceRefund` | `true` | Broadcasts a chat message to the team when a refund happens. |
+| `Server.GrantMissingCerebellum` | `false` | Grants an Encrypted Cerebellum when entering the Computational Exchange if the player has neither the Encrypted nor the Exposed Cerebellum (once per run). Rescue option for forgetting to pick it up; off by default. |
 
 The refund goes only to **the player who made the offering** — not to the host, and not to a random player in the lobby. In multiplayer, if somebody else fires the stray shot that causes the ejection, the item still returns to the player who offered it. The inventory is checked first, so the item is never duplicated.
 

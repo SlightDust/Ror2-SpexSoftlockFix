@@ -15,6 +15,7 @@
 | `Server.PreventSpexAnger` | `true` | 拦截 `SetStateOnHurt.SetPain()`（仅当对象带 `SolusVendorController`）与 `SolusVendorMainState.CanExecuteSkill()`，SPEX 不会进入偷取状态，也就不会触发赶人。 |
 | `Server.RefundExposedCerebellum` | `true` | 记录真正交出暴露小脑的玩家；一旦 `StealItem.OnExit` 发生（被赶出），若该玩家背包里既没有暴露小脑也没有加密小脑，就补发一个。 |
 | `Server.AnnounceRefund` | `true` | 补发时向全队广播一条提示。 |
+| `Server.GrantMissingCerebellum` | `false` | 进入计算交易所时，若玩家既没有加密小脑也没有暴露小脑，补发一个加密小脑（每局一次）。用于“忘记拾取加密小脑”的救援，默认关闭。 |
 
 补发只给**最初提交供奉的那名玩家**，不是房主、也不是现场随机玩家；多人局里别人乱开枪导致被赶，物品仍回到提交者身上。补发前会检查背包，已有小脑时不会重复发放。
 

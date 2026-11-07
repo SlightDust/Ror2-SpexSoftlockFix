@@ -14,7 +14,7 @@ namespace SpexSoftlockFix
     {
         public const string Guid = "pipichen.SpexSoftlockFix";
         public const string Name = "SPEX Softlock Fix";
-        public const string Version = "0.1.3";
+        public const string Version = "0.1.3-sp-1";
 
         internal static ManualLogSource Log;
         internal static ConfigEntry<bool> PreventSpexAnger;
