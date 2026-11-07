@@ -2,8 +2,6 @@
 
 修复《雨中冒险 2》合金意念 DLC 里的一个软锁：在**计算交易所**供奉「暴露小脑」开启解密传送门后，如果误伤 SPEX 被赶出交易所，这一局就再也进不去神经圣所。
 
-> Fixes a soft-lock in Risk of Rain 2's Alloyed Collective DLC: after offering the **Exposed Cerebellum** to the shrine in the Computational Exchange, accidentally damaging SPEX ejects you from the bazaar — and the decrypted portal becomes unreachable for the rest of the run.
-
 ## 软锁是怎么发生的
 
 1. 供奉台 `SolusVendorShrineController.HandleGivenItem` 收到 `MasterCore`（暴露小脑）时，会 `RemoveItemPermanent` 永久删除它、把台子切到 `Disabled`，并让状态机进入 `SolusWebPortalSequence` 打开解密传送门。
@@ -49,6 +47,4 @@ dotnet build -c Release
 dotnet build -c Release -p:GameDir="<游戏目录>" -p:BepInExCoreDir="<profile>\BepInEx\core"
 ```
 
-## English
-
-SPEX Softlock Fix prevents the Computational Exchange soft-lock in Risk of Rain 2's Alloyed Collective DLC. By default SPEX can no longer be angered into the `StealItem` state (which steals an item and ejects everyone from the bazaar), and if an ejection still happens after the Exposed Cerebellum was offered, the item is refunded to the player who offered it. Host-side only; no dependencies.
+英文说明见 [README_EN.md](README_EN.md)。
