@@ -5,6 +5,7 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using RoR2;
 
 namespace SpexSoftlockFix
 {
@@ -19,6 +20,7 @@ namespace SpexSoftlockFix
         internal static ConfigEntry<bool> PreventSpexAnger;
         internal static ConfigEntry<bool> RefundExposedCerebellum;
         internal static ConfigEntry<bool> AnnounceRefund;
+        internal static ConfigEntry<bool> GrantMissingCerebellum;
 
         private Harmony _harmony;
 
@@ -44,14 +46,36 @@ namespace SpexSoftlockFix
                 true,
                 "返还暴露小脑时向全队广播一条提示。 | Broadcast a chat message to the team when a refund happens.");
 
+            GrantMissingCerebellum = Config.Bind(
+                "Server",
+                "GrantMissingCerebellum",
+                false,
+                "进入计算交易所时, 若玩家既没有加密小脑也没有暴露小脑, 直接补发一个加密小脑(每局一次)。默认关闭: 这等于抹掉“忘记拾取”的惩罚。 | When entering the Computational Exchange, grant an Encrypted Cerebellum to players who have neither the Encrypted nor the Exposed Cerebellum (once per run). Off by default: it removes the penalty for forgetting to pick it up.");
+
             _harmony = new Harmony(Guid);
             _harmony.PatchAll(typeof(SpexSoftlockFixPlugin).Assembly);
+
+            Run.onRunStartGlobal += OnRunStart;
+            Stage.onServerStageBegin += OnStageBegin;
+
             Log.LogInfo(Name + " " + Version + " loaded.");
         }
 
         private void OnDestroy()
         {
+            Run.onRunStartGlobal -= OnRunStart;
+            Stage.onServerStageBegin -= OnStageBegin;
             _harmony?.UnpatchSelf();
+        }
+
+        private static void OnRunStart(Run run)
+        {
+            ExchangeRescue.ResetForNewRun();
+        }
+
+        private static void OnStageBegin(Stage stage)
+        {
+            ExchangeRescue.OnStageBegin(stage);
         }
     }
 }
