@@ -1,0 +1,54 @@
+# SPEX Softlock Fix
+
+修复《雨中冒险 2》合金意念 DLC 里的一个软锁：在**计算交易所**供奉「暴露小脑」开启解密传送门后，如果误伤 SPEX 被赶出交易所，这一局就再也进不去神经圣所。
+
+> Fixes a soft-lock in Risk of Rain 2's Alloyed Collective DLC: after offering the **Exposed Cerebellum** to the shrine in the Computational Exchange, accidentally damaging SPEX ejects you from the bazaar — and the decrypted portal becomes unreachable for the rest of the run.
+
+## 软锁是怎么发生的
+
+1. 供奉台 `SolusVendorShrineController.HandleGivenItem` 收到 `MasterCore`（暴露小脑）时，会 `RemoveItemPermanent` 永久删除它、把台子切到 `Disabled`，并让状态机进入 `SolusWebPortalSequence` 打开解密传送门。
+2. SPEX 本体（`EntityStates.SolusVendor`）受到伤害超过阈值会进入 `StealItem`：随机偷走道具，并在 `OnExit` 里激活场景中的 `KickOutOfShop`，把所有人赶出交易所，同时永久禁用自己。
+3. 结果是：小脑被消耗、台子关闭、SPEX 哑火。重新进入交易所时既没有小脑可交，也没有门可走。
+
+## 修复内容
+
+| 配置项 | 默认 | 作用 |
+| --- | --- | --- |
+| `Server.PreventSpexAnger` | `true` | 拦截 `SetStateOnHurt.SetPain()`（仅当对象带 `SolusVendorController`）与 `SolusVendorMainState.CanExecuteSkill()`，SPEX 不会进入偷取状态，也就不会触发赶人。 |
+| `Server.RefundExposedCerebellum` | `true` | 记录真正交出暴露小脑的玩家；一旦 `StealItem.OnExit` 发生（被赶出），若该玩家背包里既没有暴露小脑也没有加密小脑，就补发一个。 |
+| `Server.AnnounceRefund` | `true` | 补发时向全队广播一条提示。 |
+
+补发只给**最初提交供奉的那名玩家**，不是房主、也不是现场随机玩家；多人局里别人乱开枪导致被赶，物品仍回到提交者身上。补发前会检查背包，已有小脑时不会重复发放。
+
+## 安装（r2modman）
+
+1. 打开 r2modman，选择 **Risk of Rain 2** 配置。
+2. **Online** 页搜索 `SPEX Softlock Fix`（Thunderstore 上传后可用）；或 **Settings → Import local mod** 选择下载到的 zip。
+3. 点击 **Start modded** 启动。
+
+多人游戏中只需**房主**安装即可生效，逻辑全部是服务端判定。
+
+## 兼容性
+
+- 只挂钩 SPEX 专用的类/方法，不影响其他敌人的硬直、冰冻、嘲讽。
+- `SetPain` 是通用方法，但 Prefix 第一行就判断对象是否带 `SolusVendorController`，其他单位直接走原逻辑。
+- DLC 更新若改动相关类名，补丁会失效而不是崩溃；日志里能看到四条 Harmony 挂载记录。
+
+## 已知限制
+
+- 补发按**本局**记录，只有在同一局里亲自供奉过暴露小脑才会触发。
+- 玩家断线重连会换 `CharacterMaster`，记录随之失效（这种情况不补发）。
+- 开启 `PreventSpexAnger` 后，SPEX 不会再有「被打就偷东西并赶人」的反应，这是有意的行为变更。
+
+## 构建
+
+需要 .NET SDK 与游戏目录下的 `RoR2.dll` / BepInEx 5 + HarmonyX：
+
+```bash
+dotnet build -c Release
+dotnet build -c Release -p:GameDir="<游戏目录>" -p:BepInExCoreDir="<profile>\BepInEx\core"
+```
+
+## English
+
+SPEX Softlock Fix prevents the Computational Exchange soft-lock in Risk of Rain 2's Alloyed Collective DLC. By default SPEX can no longer be angered into the `StealItem` state (which steals an item and ejects everyone from the bazaar), and if an ejection still happens after the Exposed Cerebellum was offered, the item is refunded to the player who offered it. Host-side only; no dependencies.

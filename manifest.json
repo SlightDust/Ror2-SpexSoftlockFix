@@ -1,0 +1,8 @@
+{
+    "name": "SpexSoftlockFix",
+    "author": "SlightDust",
+    "version_number": "0.1.0",
+    "website_url": "",
+    "description": "修复供奉暴露小脑后误伤 SPEX 被赶出计算交易所导致的软锁，并把暴露小脑返还给最初提交的玩家。 | Fixes the SPEX ejection soft-lock in the Computational Exchange and refunds the Exposed Cerebellum to the player who offered it.",
+    "dependencies": []
+}
