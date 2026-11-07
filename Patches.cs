@@ -125,9 +125,17 @@ namespace SpexSoftlockFix
             {
                 Chat.SendBroadcastChat(new Chat.SimpleChatMessage
                 {
-                    baseToken = "<color=#c8ffc8>[SPEX Fix] 暴露小脑已返还给供奉者</color>"
+                    baseToken = IsChineseLanguage()
+                        ? "<color=#c8ffc8>[SPEX Fix] 暴露小脑已返还给供奉者</color>"
+                        : "<color=#c8ffc8>[SPEX Fix] Exposed Cerebellum refunded to the offering player</color>"
                 });
             }
+        }
+
+        private static bool IsChineseLanguage()
+        {
+            string languageName = Language.currentLanguageName;
+            return !string.IsNullOrEmpty(languageName) && languageName.StartsWith("zh");
         }
     }
 }

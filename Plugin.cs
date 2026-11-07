@@ -13,7 +13,7 @@ namespace SpexSoftlockFix
     {
         public const string Guid = "pipichen.SpexSoftlockFix";
         public const string Name = "SPEX Softlock Fix";
-        public const string Version = "0.1.1";
+        public const string Version = "0.1.2";
 
         internal static ManualLogSource Log;
         internal static ConfigEntry<bool> PreventSpexAnger;
@@ -30,19 +30,19 @@ namespace SpexSoftlockFix
                 "Server",
                 "PreventSpexAnger",
                 true,
-                "SPEX 不再因受击进入偷取状态, 也就不会把玩家踢出计算交易所。");
+                "SPEX 不再因受击进入偷取状态, 也就不会把玩家踢出计算交易所。 | SPEX can no longer be angered into the steal state, so it never ejects players from the Computational Exchange.");
 
             RefundExposedCerebellum = Config.Bind(
                 "Server",
                 "RefundExposedCerebellum",
                 true,
-                "玩家供奉暴露小脑后仍被踢出时, 把暴露小脑返还给最初提交它的玩家。");
+                "玩家供奉暴露小脑后仍被踢出时, 把暴露小脑返还给最初提交它的玩家。 | If the player is ejected after offering the Exposed Cerebellum, refund it to the player who offered it.");
 
             AnnounceRefund = Config.Bind(
                 "Server",
                 "AnnounceRefund",
                 true,
-                "返还暴露小脑时向全队广播一条提示。");
+                "返还暴露小脑时向全队广播一条提示。 | Broadcast a chat message to the team when a refund happens.");
 
             _harmony = new Harmony(Guid);
             _harmony.PatchAll(typeof(SpexSoftlockFixPlugin).Assembly);

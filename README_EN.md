@@ -43,6 +43,7 @@ In multiplayer only the **host** needs the mod installed; all logic is server-si
 - Only SPEX-specific classes and methods are patched, so other enemies keep their hit-stun, freeze, and taunt reactions.
 - `SetPain` is a shared method, but the prefix checks for `SolusVendorController` first and lets everything else run vanilla.
 - If a DLC update renames the relevant classes, the patches fail softly instead of crashing the game; the four Harmony hook lines are visible in the log.
+- Config descriptions are bilingual (Chinese / English), and the refund message follows the game language: Chinese UI shows Chinese, everything else shows English.
 
 ## Known limitations
 
