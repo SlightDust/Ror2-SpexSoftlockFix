@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- 补充 CHANGELOG.md，Thunderstore 的 Changelog 标签页现在有内容 / Added CHANGELOG.md so the Thunderstore changelog tab is populated
+
 ## 0.1.2
 
 - 配置项说明改为中英双语 / Config descriptions are now bilingual
