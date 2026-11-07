@@ -18,6 +18,18 @@
 
 补发只给**最初提交供奉的那名玩家**，不是房主、也不是现场随机玩家；多人局里别人乱开枪导致被赶，物品仍回到提交者身上。补发前会检查背包，已有小脑时不会重复发放。
 
+## 与同类 mod 的关系
+
+社区里已经有一个做同一件事的 mod：[NoSpexKickout](https://thunderstore.io/c/riskofrain2/p/Jeffdev/NoSpexKickout)（作者 Jeffdev，2025-11-19 发布）。它同样能阻止 SPEX 把人赶出计算交易所，但实现和覆盖范围不同：
+
+- 它把 `StealItem.FixedUpdate` 整个替换成空函数。`StealItem` 状态仍然会被进入，导致 SPEX **卡在这个状态里出不来**：主状态 `SolusVendorMainState` 停止运行，`OnEnter` 里创建的 `ItemStealController` 永远悬空。
+- 它只做“阻断”，不处理已经发生的情况——如果小脑已经被消耗、人已经被赶出去，它救不回来。
+- 该项目**未开源**：包内没有 LICENSE，也没有源码仓库链接，只能通过反编译查看实现。
+
+本 mod 的差异：拦截发生在进入 `StealItem` 之前，SPEX 状态机保持正常；额外的补发逻辑可以修复已经中招的局；仅依赖 BepInExPack；源码公开。
+
+> 两个 mod 都能阻止赶人，**不要同时安装**，没有意义。
+
 ## 安装（r2modman）
 
 1. 打开 r2modman，选择 **Risk of Rain 2** 配置。
@@ -48,3 +60,10 @@ dotnet build -c Release -p:GameDir="<游戏目录>" -p:BepInExCoreDir="<profile>
 ```
 
 英文说明见 [README_EN.md](README_EN.md)。
+
+## 许可证
+
+本项目以 **GNU General Public License v3.0 or later（GPL-3.0-or-later）** 发布，完整条款见 [LICENSE](LICENSE)。
+
+你可以自由使用、修改和再分发，但分发修改版时需要同样以 GPL 授权并提供源码。
+

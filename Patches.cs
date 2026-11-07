@@ -1,3 +1,6 @@
+// Copyright (C) 2026 SlightDust
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 using EntityStates.SolusVendor;
 using HarmonyLib;
 using RoR2;

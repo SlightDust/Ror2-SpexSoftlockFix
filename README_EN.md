@@ -18,6 +18,18 @@ Fixes a soft-lock in Risk of Rain 2's Alloyed Collective DLC: after offering the
 
 The refund goes only to **the player who made the offering** — not to the host, and not to a random player in the lobby. In multiplayer, if somebody else fires the stray shot that causes the ejection, the item still returns to the player who offered it. The inventory is checked first, so the item is never duplicated.
 
+## Relationship to similar mods
+
+An existing mod already targets the same problem: [NoSpexKickout](https://thunderstore.io/c/riskofrain2/p/Jeffdev/NoSpexKickout) by Jeffdev (published 2025-11-19). It also prevents SPEX from ejecting players, but the implementation and scope differ:
+
+- It replaces `StealItem.FixedUpdate` with an empty method. The `StealItem` state is still entered, so SPEX **gets stuck in it**: `SolusVendorMainState` stops running and the `ItemStealController` created in `OnEnter` is left dangling.
+- It only blocks future ejections. If the Exposed Cerebellum has already been consumed and you have already been ejected, it cannot recover the run.
+- That project is **not open source**: the package ships no LICENSE and no source repository link, so the implementation can only be inspected by decompiling the DLL.
+
+How this mod differs: the interception happens before `StealItem` is entered, so SPEX keeps a healthy state machine; the extra refund logic repairs runs that are already soft-locked; it depends only on BepInExPack; and the source is public.
+
+> Both mods prevent the ejection, so **do not install them together** — it serves no purpose.
+
 ## Installation (r2modman)
 
 1. Open r2modman and select your **Risk of Rain 2** profile.
@@ -48,3 +60,10 @@ dotnet build -c Release -p:GameDir="<game dir>" -p:BepInExCoreDir="<profile>\Bep
 ```
 
 中文说明见 [README.md](README.md)。
+
+## License
+
+This project is released under the **GNU General Public License v3.0 or later (GPL-3.0-or-later)**. See [LICENSE](LICENSE) for the full terms.
+
+You are free to use, modify and redistribute it, but redistributed modified versions must also be licensed under the GPL with source code made available.
+

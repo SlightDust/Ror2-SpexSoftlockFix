@@ -1,3 +1,6 @@
+// Copyright (C) 2026 SlightDust
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
@@ -10,7 +13,7 @@ namespace SpexSoftlockFix
     {
         public const string Guid = "pipichen.SpexSoftlockFix";
         public const string Name = "SPEX Softlock Fix";
-        public const string Version = "0.1.0";
+        public const string Version = "0.1.1";
 
         internal static ManualLogSource Log;
         internal static ConfigEntry<bool> PreventSpexAnger;
